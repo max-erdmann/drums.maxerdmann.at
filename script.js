@@ -15,6 +15,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+  const snare = new Audio("sounds/snare.mp3");
+  snare.preload = "auto";
+
 document.addEventListener('DOMContentLoaded', () => {
   const kick = document.getElementById('kick');
 
