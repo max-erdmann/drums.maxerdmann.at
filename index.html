@@ -15,6 +15,9 @@
                 Schreib mir einfach (:
             </p>
             <h1 id="snare">🥁</h1>
+            <p>
+                (hit it!)
+            </p>
       
           <a href="https://www.instagram.com/maxxerdmann/">
               Instagram <-
@@ -25,8 +28,6 @@
           </a>
         </div>
 
-
-<button id="clickBtn">🔊 Click me</button>
 
 <script>
   // Create AudioContext (works in Safari too)
@@ -52,7 +53,7 @@
   document.addEventListener("click", unlockAudioContext);
 
   // Play the sound on button click
-  document.getElementById("clickBtn").addEventListener("click", () => {
+  document.getElementById("snare").addEventListener("click", () => {
     if (!buffer) return; // sound not loaded yet
     const source = audioCtx.createBufferSource();
     source.buffer = buffer;
