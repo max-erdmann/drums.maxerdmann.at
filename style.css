@@ -10,6 +10,11 @@ body {
   width: 100vw;
 }
 
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
 a {
   text-decoration: none;
   color: black;
