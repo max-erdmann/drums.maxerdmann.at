@@ -34,7 +34,7 @@
   let buffer; // will hold decoded audio
 
   // Load and decode the sound
-  fetch("sounds/snare.mp3") // replace with your sound file path
+  fetch("/sounds/snare.mp3") // replace with your sound file path
     .then(response => response.arrayBuffer())
     .then(arrayBuffer => audioCtx.decodeAudioData(arrayBuffer))
     .then(decoded => buffer = decoded)
