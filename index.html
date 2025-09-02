@@ -26,6 +26,8 @@
         </div>
 
 
+<button id="clickBtn">🔊 Click me</button>
+
 <script>
   // Create AudioContext (works in Safari too)
   const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -34,7 +36,7 @@
   let buffer; // will hold decoded audio
 
   // Load and decode the sound
-  fetch("/sounds/snare.mp3") // replace with your sound file path
+  fetch("click.mp3") // replace with your sound file path
     .then(response => response.arrayBuffer())
     .then(arrayBuffer => audioCtx.decodeAudioData(arrayBuffer))
     .then(decoded => buffer = decoded)
@@ -50,7 +52,7 @@
   document.addEventListener("click", unlockAudioContext);
 
   // Play the sound on button click
-  document.getElementById("snare").addEventListener("click", () => {
+  document.getElementById("clickBtn").addEventListener("click", () => {
     if (!buffer) return; // sound not loaded yet
     const source = audioCtx.createBufferSource();
     source.buffer = buffer;
@@ -58,6 +60,5 @@
     source.start(0); // plays immediately
   });
 </script>
-
     </body>
 </html>
