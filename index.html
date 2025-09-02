@@ -14,11 +14,8 @@
                 oder einem Live/Studio Drummer? <br>
                 Schreib mir einfach (:
             </p>
-            <h1 id="snare" onclick="snare.play();">🥁</h1>
-            <script type="text/javascript">
-                const snare =new Audio();
-                snare.src = "/sounds/Snare.mp3";
-            </script>
+            <h1 id="snare">🥁</h1>
+      
           <a href="https://www.instagram.com/maxxerdmann/">
               Instagram <-
           </a>
@@ -28,6 +25,39 @@
           </a>
         </div>
 
+
+<script>
+  // Create AudioContext (works in Safari too)
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  const audioCtx = new AudioContext();
+
+  let buffer; // will hold decoded audio
+
+  // Load and decode the sound
+  fetch("sounds/snare.mp3") // replace with your sound file path
+    .then(response => response.arrayBuffer())
+    .then(arrayBuffer => audioCtx.decodeAudioData(arrayBuffer))
+    .then(decoded => buffer = decoded)
+    .catch(err => console.error("Error loading sound:", err));
+
+  // Unlock audio context on first user interaction (iOS/Safari requirement)
+  function unlockAudioContext() {
+    if (audioCtx.state === "suspended") {
+      audioCtx.resume();
+    }
+    document.removeEventListener("click", unlockAudioContext);
+  }
+  document.addEventListener("click", unlockAudioContext);
+
+  // Play the sound on button click
+  document.getElementById("snare").addEventListener("click", () => {
+    if (!buffer) return; // sound not loaded yet
+    const source = audioCtx.createBufferSource();
+    source.buffer = buffer;
+    source.connect(audioCtx.destination);
+    source.start(0); // plays immediately
+  });
+</script>
                 <script src="script.js"></script>
         <audio id="snare-sound" src="/sounds/Snare.mp3" preload="auto"></audio>
 
