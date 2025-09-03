@@ -17,6 +17,7 @@ body {
 }
 
 .hitit {
+  display: flex;
   flex-direction: row;
 }
 
