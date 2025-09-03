@@ -31,35 +31,44 @@
 
 
 <script>
-  // Create AudioContext (works in Safari too)
   const AudioContext = window.AudioContext || window.webkitAudioContext;
   const audioCtx = new AudioContext();
 
-  let buffer; // will hold decoded audio
+  let buffer = null;
+  let unlocked = false;
 
-  // Load and decode the sound
-  fetch("/sounds/Snare.mp3") // replace with your sound file path
-    .then(response => response.arrayBuffer())
-    .then(arrayBuffer => audioCtx.decodeAudioData(arrayBuffer))
-    .then(decoded => buffer = decoded)
-    .catch(err => console.error("Error loading sound:", err));
+  // 1️⃣ Load audio once
+  fetch("/sounds/Snare.mp3") // replace with your sound file
+    .then(r => r.arrayBuffer())
+    .then(d => audioCtx.decodeAudioData(d))
+    .then(decoded => {
+      buffer = decoded;
+      console.log("Audio loaded");
+    })
+    .catch(err => console.error("Error loading audio:", err));
 
-  // Unlock audio context on first user interaction (iOS/Safari requirement)
-  function unlockAudioContext() {
-    if (audioCtx.state === "suspended") {
-      audioCtx.resume();
+  // 2️⃣ Unlock AudioContext on first user interaction
+  function unlockAudio() {
+    if (!unlocked && audioCtx.state === "suspended") {
+      audioCtx.resume().then(() => {
+        console.log("AudioContext resumed");
+        unlocked = true;
+      });
     }
-    document.removeEventListener("click", unlockAudioContext);
   }
-  document.addEventListener("click", unlockAudioContext);
 
-  // Play the sound on button click
-  document.getElementById("snare").addEventListener("click", () => {
-    if (!buffer) return; // sound not loaded yet
+  document.addEventListener("click", unlockAudio, { once: true });
+  document.addEventListener("touchstart", unlockAudio, { once: true });
+
+  // 3️⃣ Play sound on button click
+  const button = document.getElementById("snare");
+  button.addEventListener("click", () => {
+    if (!buffer) return; // wait until audio is loaded
+
     const source = audioCtx.createBufferSource();
     source.buffer = buffer;
     source.connect(audioCtx.destination);
-    source.start(0); // plays immediately
+    source.start(0);
   });
 </script>
     </body>
