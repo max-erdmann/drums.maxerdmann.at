@@ -16,6 +16,10 @@ body {
   flex-direction: column;
 }
 
+.hitit {
+  flex-direction: row;
+}
+
 a {
   text-decoration: none;
   color: black;
